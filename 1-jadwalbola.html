@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  /* CSS - Desain Tampilan */
+  :root {
+    --primary-color: #0d47a1;
+    --accent-color: #ffca28;
+    --text-dark: #333;
+    --bg-light: #f9f9f9;
+  }
+
+  .jadwal-bola-wrapper {
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    max-width: 600px;
+    margin: 20px auto;
+    background: var(--bg-light);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  }
+
+  .header-jadwal {
+    background: var(--primary-color);
+    color: white;
+    padding: 15px;
+    text-align: center;
+  }
+
+  .header-jadwal h2 { margin: 0; font-size: 1.2rem; }
+  .header-jadwal p { margin: 5px 0 0; font-size: 0.8rem; opacity: 0.8; }
+
+  .card-item {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+    transition: background 0.3s;
+  }
+
+  .card-item:hover { background: #fff; }
+
+  .waktu-box {
+    flex: 0 0 70px;
+    text-align: center;
+    border-right: 2px solid var(--accent-color);
+    margin-right: 15px;
+  }
+
+  .jam { font-weight: bold; font-size: 1.1rem; color: var(--primary-color); }
+  .tgl { font-size: 0.7rem; color: #777; }
+
+  .info-pertandingan { flex-grow: 1; }
+  .liga-nama { font-size: 0.75rem; font-weight: bold; color: #e53935; text-transform: uppercase; margin-bottom: 4px; }
+  .tim-duel { font-size: 1rem; font-weight: 600; color: var(--text-dark); margin-bottom: 4px; }
+  
+  .tv-saluran {
+    display: inline-block;
+    background: #e0e0e0;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    font-weight: bold;
+    color: #555;
+  }
+
+  .no-data { padding: 20px; text-align: center; color: #999; }
+</style>
+</head>
+<body>
+
+<div class="jadwal-bola-wrapper">
+  <div class="header-jadwal">
+    <h2>JADWAL BOLA HARI INI</h2>
+    <p id="current-date"></p>
+  </div>
+  
+  <div id="list-jadwal">
+    </div>
+</div>
+
+<script>
+  // JS - Data Pertandingan (Ganti/Tambah di sini)
+  const dataJadwal = [
+    { 
+      liga: "Premier League", 
+      tim: "Arsenal vs Manchester City", 
+      jam: "22:30", 
+      tgl: "06 Feb", 
+      tv: "SCTV / Vidio" 
+    },
+    { 
+      liga: "La Liga", 
+      tim: "Real Madrid vs Atletico Madrid", 
+      jam: "03:00", 
+      tgl: "07 Feb", 
+      tv: "Bein Sports 3" 
+    },
+    { 
+      liga: "Serie A", 
+      tim: "Inter Milan vs AC Milan", 
+      jam: "02:45", 
+      tgl: "07 Feb", 
+      tv: "Vidio" 
+    },
+    { 
+      liga: "Bundesliga", 
+      tim: "Bayern Munchen vs Dortmund", 
+      jam: "00:30", 
+      tgl: "08 Feb", 
+      tv: "RCTI+" 
+    }
+  ];
+
+  function muatJadwal() {
+    const wadah = document.getElementById('list-jadwal');
+    const tglHeader = document.getElementById('current-date');
+    
+    // Set Tanggal Hari Ini di Header
+    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    tglHeader.innerText = new Date().toLocaleDateString('id-ID', options);
+
+    if (dataJadwal.length === 0) {
+      wadah.innerHTML = '<div class="no-data">Belum ada jadwal tersedia.</div>';
+      return;
+    }
+
+    let html = '';
+    dataJadwal.forEach(item => {
+      html += `
+        <div class="card-item">
+          <div class="waktu-box">
+            <div class="jam">${item.jam}</div>
+            <div class="tgl">${item.tgl}</div>
+          </div>
+          <div class="info-pertandingan">
+            <div class="liga-nama">${item.liga}</div>
+            <div class="tim-duel">${item.tim}</div>
+            <div class="tv-saluran">Live: ${item.tv}</div>
+          </div>
+        </div>
+      `;
+    });
+    
+    wadah.innerHTML = html;
+  }
+
+  // Jalankan fungsi saat halaman dimuat
+  window.onload = muatJadwal;
+</script>
+
+</body>
+</html>
